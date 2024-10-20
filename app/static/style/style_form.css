@@ -1,58 +1,73 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    line-height: 1.6;
+}
+
 #generateTab {
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 20px;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 30px;
     background-color: #ffffff;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+h2 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 24px;
 }
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     font-weight: bold;
-    color: #333;
-    font-size: 14px;
+    color: #34495e;
+    font-size: 16px;
 }
 
 .form-group input[type="text"],
+.form-group input[type="number"],
 .form-group input[type="range"],
 .form-group input[type="color"],
 .form-group select,
 .form-group input[type="file"] {
     width: 100%;
     padding: 12px;
-    border: 1px solid #ccc;
+    border: 2px solid #bdc3c7;
     border-radius: 8px;
     box-sizing: border-box;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
     transition: all 0.3s ease;
 }
 
 .form-group input[type="text"]:focus,
+.form-group input[type="number"]:focus,
 .form-group input[type="range"]:focus,
 .form-group input[type="color"]:focus,
 .form-group select:focus,
 .form-group input[type="file"]:focus {
-    border-color: #007bff;
-    box-shadow: 0 2px 10px rgba(0, 123, 255, 0.2);
+    border-color: #3498db;
+    box-shadow: 0 0 8px rgba(52, 152, 219, 0.5);
 }
 
 .form-group input[type="color"] {
-    height: 40px;
-    padding: 2px;
-    border-radius: 8px;
+    height: 50px;
+    padding: 5px;
 }
 
 .form-group input[type="range"] {
     -webkit-appearance: none;
     height: 10px;
-    background: #d3d3d3;
-    border-radius: 8px;
+    background: #ecf0f1;
+    border-radius: 5px;
     outline: none;
     opacity: 0.8;
     transition: opacity 0.2s ease;
@@ -65,61 +80,53 @@
 .form-group input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 20px;
-    height: 20px;
-    background: #007bff;
+    width: 25px;
+    height: 25px;
+    background: #3498db;
     cursor: pointer;
     border-radius: 50%;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .form-group input[type="range"]::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    background: #007bff;
+    width: 25px;
+    height: 25px;
+    background: #3498db;
     cursor: pointer;
     border-radius: 50%;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
-.generate-btn, .download-btn, .telegram-btn {
+.generate-btn, .telegram-btn {
     display: block;
     width: 100%;
-    padding: 14px;
+    padding: 15px;
     color: white;
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 16px;
-    margin-top: 12px;
-    transition: background-color 0.3s, box-shadow 0.3s;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 20px;
+    transition: all 0.3s ease;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .generate-btn {
-    background-color: #28a745;
+    background-color: #2ecc71;
 }
 
 .generate-btn:hover {
-    background-color: #218838;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-.download-btn {
-    background-color: #007bff;
-}
-
-.download-btn:hover {
-    background-color: #0056b3;
+    background-color: #27ae60;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .telegram-btn {
-    background-color: #0088cc;
+    background-color: #3498db;
 }
 
 .telegram-btn:hover {
-    background-color: #006699;
+    background-color: #2980b9;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
@@ -127,36 +134,32 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 30px;
     padding: 20px;
-    background-color: #f9f9f9;
+    background-color: #ecf0f1;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-#qrSizeValue {
+#qrSizeValue, #dotScaleValue, #backgroundImageAlphaValue {
+    display: inline-block;
     margin-left: 10px;
     font-weight: bold;
-    color: #333;
-}
-
-#downloadQR, #sendToTelegram, .generate-btn {
-    margin-bottom: 15px;
+    color: #2c3e50;
+    font-size: 16px;
 }
 
 .form-group input[type="file"] {
     padding: 12px;
     background-color: #f8f9fa;
-    border: 1px solid #ccc;
+    border: 2px solid #bdc3c7;
     border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .form-group input[type="file"]:focus {
-    border-color: #007bff;
-    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
+    border-color: #3498db;
+    box-shadow: 0 0 8px rgba(52, 152, 219, 0.5);
 }
 
 .form-group input[type="file"]::-webkit-file-upload-button {
@@ -167,7 +170,7 @@
 .form-group input[type="file"]::before {
     content: 'Выберите файл';
     display: inline-block;
-    background: #007bff;
+    background: #3498db;
     color: white;
     padding: 10px 16px;
     outline: none;
@@ -175,11 +178,11 @@
     cursor: pointer;
     font-weight: 700;
     border-radius: 8px;
-    transition: background-color 0.3s, box-shadow 0.3s;
+    transition: all 0.3s ease;
 }
 
 .form-group input[type="file"]:hover::before {
-    background-color: #0056b3;
+    background-color: #2980b9;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -197,8 +200,8 @@
 .file-info {
     flex: 1 1 auto;
     margin-top: 5px;
-    font-size: 0.9em;
-    color: #666;
+    font-size: 14px;
+    color: #7f8c8d;
 }
 
 @media (min-width: 768px) {
@@ -209,4 +212,26 @@
     .file-info {
         margin-top: 0;
     }
+}
+
+/* Дополнительные стили для улучшения читаемости */
+select {
+    background-color: #fff;
+    color: #2c3e50;
+}
+
+input[type="number"] {
+    color: #2c3e50;
+}
+
+#qrcode {
+    margin-top: 30px;
+    text-align: center;
+}
+
+#qrcode img {
+    max-width: 100%;
+    height: auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }

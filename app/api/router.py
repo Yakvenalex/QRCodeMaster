@@ -1,58 +1,51 @@
-from PIL import Image
+import base64
+from io import BytesIO
+
+from aiogram.types import InputFile, BufferedInputFile
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
-from app.api.schemas import QRCodeParams, QRCodeRequest, QRCodeScaner
-from app.api.utils import create_qr_code, process_logo, save_qr_code_image
+from app.api.schemas import QRCodeRequest, QRCodeScaner
 from app.bot.create_bot import bot
 from app.bot.keyboards.kbs import main_keyboard
-from app.config import settings
 
 router = APIRouter(prefix='/api', tags=['АПИ'])
-
-
-@router.post("/generate-qr/")
-async def generate_qr(params: QRCodeParams):
-    img = create_qr_code(params)
-
-    if params.qr_logo:
-        logo = await process_logo(params.qr_logo, params.qr_size)
-        if logo:
-            # Рассчитываем позицию для вставки логотипа в центр QR-кода
-            pos = ((params.qr_size - logo.size[0]) // 2, (params.qr_size - logo.size[1]) // 2)
-
-            # Создаем новое изображение с прозрачным фоном
-            combined = Image.new('RGBA', img.size, (0, 0, 0, 0))
-
-            # Преобразуем QR-код в RGBA, если это необходимо
-            if img.mode != 'RGBA':
-                img = img.convert('RGBA')
-
-            # Накладываем QR-код и логотип
-            combined.paste(img, (0, 0))
-            combined.paste(logo, pos, logo)
-
-            img = combined.convert('RGB')  # Преобразуем обратно в RGB для сохранения
-
-    # Сохраняем изображение и возвращаем URL
-    qr_code_url = await save_qr_code_image(img, params.user_id, settings.QR_CODES_DIR)
-
-    return JSONResponse(content={"qr_code_url": qr_code_url})
 
 
 @router.post("/send-qr/", response_class=JSONResponse)
 async def send_qr_code(request: QRCodeRequest):
     try:
+        # Получаем base64 строку из запроса
+        base64_data = request.qr_code_url
+
+        # Удаляем префикс MIME, если он есть
+        if base64_data.startswith('data:image/'):
+            base64_data = base64_data.split(',', 1)[1]
+
+        # Декодируем base64 изображение в байты
+        image_data = base64.b64decode(base64_data)
+
+        # Создаем BufferedInputFile для отправки изображения
+        image_file = BufferedInputFile(file=image_data, filename="qr_code.png")
+
         caption = (
             "🎉 Ваш QR-код успешно создан и отправлен!\n\n"
             "🔍 Вы можете отсканировать его, чтобы проверить содержимое.\n"
             "📤 Поделитесь этим QR-кодом с другими или сохраните его для дальнейшего использования.\n\n"
             "Что бы вы хотели сделать дальше? 👇"
         )
-        await bot.send_photo(chat_id=request.user_id, photo=request.qr_code_url, caption=caption,
-                             reply_markup=main_keyboard())
+
+        # Используем BufferedInputFile для отправки изображения
+        await bot.send_photo(
+            chat_id=request.user_id,
+            photo=image_file,  # Передаем BufferedInputFile
+            caption=caption,
+            reply_markup=main_keyboard()
+        )
+
         return JSONResponse(content={"message": "QR-код успешно отправлен"}, status_code=200)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        print(f"Ошибка при отправке QR-кода: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Ошибка при отправке QR-кода: {str(e)}")
 
 
 @router.post("/send-scaner-info/", response_class=JSONResponse)

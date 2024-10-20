@@ -4,36 +4,37 @@
 
 {% block extra_head %}
 <link rel="stylesheet" href="/static/style/style_form.css">
+<script src="https://cdn.jsdelivr.net/npm/easyqrcodejs@4.4.13/dist/easy.qrcode.min.js"></script>
 {% endblock %}
 
 {% block content %}
 <h2>Создать кастомный QR-код</h2>
 
-<form id="qrForm" enctype="multipart/form-data">
+<form id="qrForm">
     <div class="form-group">
         <label for="qrInput">Текст или URL:</label>
-        <input type="text" id="qrInput" name="qr_input" placeholder="Введите текст или URL" required>
+        <input type="text" id="qrInput" name="text" placeholder="Введите текст или URL" required>
     </div>
 
     <div class="form-group">
         <label for="qrSize">Размер QR-кода:</label>
-        <input type="range" id="qrSize" name="qr_size" min="100" max="400" value="256" step="10">
+        <input type="range" id="qrSize" name="width" min="100" max="400" value="256" step="10">
         <span id="qrSizeValue">256px</span>
     </div>
 
     <div class="form-group">
-        <label for="colorPicker">Цвет QR-кода:</label>
-        <input type="color" id="colorPicker" name="color_picker" value="#000000">
+        <label for="colorDark">Цвет QR-кода:</label>
+        <input type="color" id="colorDark" name="colorDark" value="#000000">
     </div>
 
     <div class="form-group">
-        <label for="bgColorPicker">Цвет фона:</label>
-        <input type="color" id="bgColorPicker" name="bg_color_picker" value="#ffffff">
+        <label for="colorLight">Цвет фона:</label>
+        <input type="color" id="colorLight" name="colorLight" value="#ffffff">
     </div>
 
     <div class="form-group">
-        <label for="errorCorrectionLevel">Уровень коррекции ошибок:</label>
-        <select id="errorCorrectionLevel" name="error_correction_level">
+        <label for="correctLevel">Уровень коррекции ошибок:</label>
+        <select id="correctLevel" name="correctLevel">
             <option value="L">Низкий (7%)</option>
             <option value="M">Средний (15%)</option>
             <option value="Q">Квартиль (25%)</option>
@@ -42,9 +43,40 @@
     </div>
 
     <div class="form-group">
-        <label for="qrLogo">Логотип (необязательно):</label>
-        <input type="file" id="qrLogo" name="qr_logo" accept="image/*">
-        <div id="logoInfo" class="file-info"></div>
+        <label for="dotScale">Размер точек:</label>
+        <input type="range" id="dotScale" name="dotScale" min="0.1" max="1" value="1" step="0.1">
+        <span id="dotScaleValue">1</span>
+    </div>
+
+    <div class="form-group">
+        <label for="quietZone">Отступ (тихая зона):</label>
+        <input type="number" id="quietZone" name="quietZone" min="0" max="100" value="10">
+    </div>
+
+    <div class="form-group">
+        <label for="logo">Логотип:</label>
+        <input type="file" id="logo" name="logo" accept="image/*">
+    </div>
+
+    <div class="form-group">
+        <label for="logoWidth">Ширина логотипа:</label>
+        <input type="number" id="logoWidth" name="logoWidth" min="20" max="200" value="60">
+    </div>
+
+    <div class="form-group">
+        <label for="logoHeight">Высота логотипа:</label>
+        <input type="number" id="logoHeight" name="logoHeight" min="20" max="200" value="60">
+    </div>
+
+    <div class="form-group">
+        <label for="backgroundImage">Фоновое изображение:</label>
+        <input type="file" id="backgroundImage" name="backgroundImage" accept="image/*">
+    </div>
+
+    <div class="form-group">
+        <label for="backgroundImageAlpha">Прозрачность фона:</label>
+        <input type="range" id="backgroundImageAlpha" name="backgroundImageAlpha" min="0" max="1" value="0.1" step="0.1">
+        <span id="backgroundImageAlphaValue">0.1</span>
     </div>
 
     <button type="submit" class="generate-btn">Создать QR-код</button>

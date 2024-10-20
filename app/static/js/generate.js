@@ -2,16 +2,28 @@ document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('qrForm');
     const qrSizeInput = document.getElementById('qrSize');
     const qrSizeValue = document.getElementById('qrSizeValue');
-    const qrLogoInput = document.getElementById('qrLogo');
+    const logoInput = document.getElementById('logo');
     const logoInfo = document.getElementById('logoInfo');
+    const dotScaleInput = document.getElementById('dotScale');
+    const dotScaleValue = document.getElementById('dotScaleValue');
+    const backgroundImageAlphaInput = document.getElementById('backgroundImageAlpha');
+    const backgroundImageAlphaValue = document.getElementById('backgroundImageAlphaValue');
 
-    // Обновление отображаемого значения размера QR-кода
+    // Обновление отображаемых значений
     qrSizeInput.addEventListener('input', function () {
         qrSizeValue.textContent = this.value + 'px';
     });
 
+    dotScaleInput.addEventListener('input', function () {
+        dotScaleValue.textContent = this.value;
+    });
+
+    backgroundImageAlphaInput.addEventListener('input', function () {
+        backgroundImageAlphaValue.textContent = this.value;
+    });
+
     // Обработчик события изменения файла логотипа
-    qrLogoInput.addEventListener('change', function (e) {
+    logoInput.addEventListener('change', function (e) {
         const file = e.target.files[0];
         if (file) {
             const fileSize = (file.size / 1024).toFixed(2); // Размер в КБ
@@ -44,79 +56,58 @@ function resetQRCodeState() {
     qrcodeDiv.innerHTML = '<p>Генерация QR-кода...</p>';
 }
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
+async function generateQR() {
+    resetQRCodeState();
 
-async function fetchQRCode(userID, formData) {
-    let jsonData = {
-        user_id: userID,
-        qr_input: formData.get('qr_input'),
-        qr_size: parseInt(formData.get('qr_size')),
-        color_picker: formData.get('color_picker'),
-        bg_color_picker: formData.get('bg_color_picker'),
-        error_correction_level: formData.get('error_correction_level'),
-        qr_logo: null
-    };
-
-    const logoFile = formData.get('qr_logo');
-    if (logoFile && logoFile.size > 0) {
-        console.log('Processing logo file...');
-        if (logoFile.size > 10024 * 10024) {
-            throw new Error('Logo file is too large. Maximum size is 10MB.');
+    try {
+        if (typeof tg === 'undefined' || !tg.initDataUnsafe?.user?.id) {
+            throw new Error("Telegram WebApp не инициализирован корректно");
         }
-        try {
-            const base64Logo = await convertToBase64(logoFile);
-            jsonData.qr_logo = base64Logo;
-            console.log('Logo processed successfully');
-        } catch (error) {
-            console.error('Error processing logo:', error);
-            throw new Error('Failed to process logo: ' + error.message);
+
+        const form = document.getElementById('qrForm');
+        if (!form) throw new Error("Форма QR не найдена");
+
+        const formData = new FormData(form);
+        const options = {
+            text: formData.get('text'),
+            width: parseInt(formData.get('width')),
+            height: parseInt(formData.get('width')),
+            colorDark: formData.get('colorDark'),
+            colorLight: formData.get('colorLight'),
+            correctLevel: QRCode.CorrectLevel[formData.get('correctLevel')],
+            dotScale: parseFloat(formData.get('dotScale')),
+            quietZone: parseInt(formData.get('quietZone')),
+            logoWidth: parseInt(formData.get('logoWidth')),
+            logoHeight: parseInt(formData.get('logoHeight')),
+            backgroundImageAlpha: parseFloat(formData.get('backgroundImageAlpha')),
+            onRenderingEnd: function (qrCodeOptions, dataURL) {
+                updateQRCodeDisplay(dataURL);
+            }
+        };
+
+        const logoFile = document.getElementById('logo').files[0];
+        if (logoFile) {
+            options.logo = URL.createObjectURL(logoFile);
         }
+
+        const backgroundFile = document.getElementById('backgroundImage').files[0];
+        if (backgroundFile) {
+            options.backgroundImage = URL.createObjectURL(backgroundFile);
+        }
+
+        const qrcodeContainer = document.getElementById('qrcode');
+        qrcodeContainer.innerHTML = '';
+        new QRCode(qrcodeContainer, options);
+
+    } catch (error) {
+        handleError(error);
     }
-
-    console.log('Sending request to server...');
-    const response = await fetch(`/api/generate-qr/`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(jsonData)
-    });
-
-    if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Server error (${response.status}): ${errorText}`);
-    }
-
-    const data = await response.json();
-    if (!data.qr_code_url) {
-        throw new Error('QR code URL not received from server');
-    }
-
-    return data.qr_code_url;
-}
-
-function convertToBase64(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => {
-            const base64 = reader.result.split(',')[1];
-            console.log('Размер base64 логотипа:', base64.length);
-            resolve(base64);
-        };
-        reader.onerror = error => {
-            console.error('Ошибка при чтении файла:', error);
-            reject(error);
-        };
-    });
 }
 
 function handleError(error) {
-    console.error('Error details:', error);
+    console.error('Детали ошибки:', error);
 
-    let errorMessage = 'An unexpected error occurred';
+    let errorMessage = 'Произошла непредвиденная ошибка';
     if (error instanceof Error) {
         errorMessage = error.message;
     } else if (typeof error === 'string') {
@@ -125,11 +116,11 @@ function handleError(error) {
 
     if (typeof tg !== 'undefined' && tg.showPopup) {
         tg.showPopup({
-            title: 'Error',
+            title: 'Ошибка',
             message: errorMessage,
             buttons: [
                 {type: 'close'},
-                {type: 'default', text: 'Reset', id: 'reset'}
+                {type: 'default', text: 'Сбросить', id: 'reset'}
             ]
         }).then((buttonId) => {
             if (buttonId === 'reset') {
@@ -138,38 +129,16 @@ function handleError(error) {
             }
         });
     } else {
-        alert(`Error: ${errorMessage}`);
+        alert(`Ошибка: ${errorMessage}`);
     }
 }
 
-async function generateQR() {
-    resetQRCodeState(); // Сбрасываем состояние перед генерацией
-
-    const userID = tg.initDataUnsafe.user.id;
-    try {
-        if (!userID) {
-            throw new Error("User ID not available");
-        }
-
-        const form = document.getElementById('qrForm');
-        if (!form) throw new Error("QR form not found");
-
-        const formData = new FormData(form);
-
-        const qrCodeUrl = await fetchQRCode(userID, formData);
-        updateQRCodeDisplay(qrCodeUrl); // Обновляем отображение QR-кода
-    } catch (error) {
-        handleError(error);
-    }
-}
-
-function updateQRCodeDisplay(url) {
+function updateQRCodeDisplay(dataURL) {
     const qrcodeDiv = document.getElementById('qrcode');
 
-    // Очищаем предыдущее содержимое и вставляем QR-код и кнопку
     qrcodeDiv.innerHTML = `
         <div style="text-align: center;">
-            <img src="${url}" alt="QR Code" style="display: block; margin: 0 auto;">
+            <img src="${dataURL}" alt="QR Code" style="display: block; margin: 0 auto;">
             <button id="sendToTelegram" class="telegram-btn" onclick="sendToTelegram()" style="display: block; margin-top: 10px;">Отправить в Telegram</button>
         </div>
     `;
@@ -185,7 +154,6 @@ async function sendToTelegram() {
     if (tg) {
         const userId = tg.initDataUnsafe.user.id;
         const qrCodeUrl = img.src;
-
         try {
             const response = await fetch(`/api/send-qr/`, {
                 method: 'POST',
@@ -211,7 +179,6 @@ async function sendToTelegram() {
                 buttons: [{type: 'close'}]
             });
 
-            // Закрываем Mini App после короткой задержки
             setTimeout(() => {
                 tg.close();
             }, 2000);

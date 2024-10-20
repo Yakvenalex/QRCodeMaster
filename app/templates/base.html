@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Приложение QR-кодов{% endblock %}</title>
+    <link rel="stylesheet" href="/static/style/style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.ready()
+    </script>
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+<div class="container">
+    {% block content %}{% endblock %}
+</div>
+
+<nav class="nav-bar">
+    <a href="/" class="nav-item {% if active_tab == 'generate' %}active{% endif %}">
+        <img src="/static/img/generate.svg" alt="Генерация" class="nav-icon">
+        Генерация
+    </a>
+    <a href="/scan" class="nav-item {% if active_tab == 'scan' %}active{% endif %}">
+        <img src="/static/img/scan.svg" alt="Сканировать" class="nav-icon">
+        Сканировать
+    </a>
+    <a href="/upload" class="nav-item {% if active_tab == 'upload' %}active{% endif %}">
+        <img src="/static/img/upload.svg" alt="Загрузить" class="nav-icon">
+        Загрузить
+    </a>
+</nav>
+{% block extra_scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,304 @@
+:root {
+    --tg-theme-bg-color: #f9f9f9;
+    --tg-theme-text-color: #333333;
+    --tg-theme-hint-color: #b3b3b3;
+    --tg-theme-link-color: #00aaff;
+    --tg-theme-button-color: #00aaff;
+    --tg-theme-button-text-color: #ffffff;
+    --tg-theme-shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--tg-theme-bg-color);
+    color: var(--tg-theme-text-color);
+    transition: all 0.3s ease;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    box-sizing: border-box;
+    padding-bottom: 80px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px var(--tg-theme-shadow-color);
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.nav-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background-color: #ffffff;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 -4px 8px var(--tg-theme-shadow-color);
+    z-index: 10;
+}
+
+.nav-item {
+    color: var(--tg-theme-hint-color);
+    text-decoration: none;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: color 0.3s ease;
+}
+
+.nav-item.active {
+    color: var(--tg-theme-button-color);
+}
+
+.nav-item svg {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 5px;
+    transition: transform 0.3s ease;
+}
+
+.nav-item.active svg {
+    transform: scale(1.1);
+}
+
+input[type="text"], button {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid var(--tg-theme-hint-color);
+    border-radius: 8px;
+    font-size: 16px;
+    box-shadow: 0 2px 6px var(--tg-theme-shadow-color);
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus {
+    border-color: var(--tg-theme-button-color);
+    box-shadow: 0 2px 10px rgba(0, 136, 204, 0.2);
+}
+
+button {
+    background-color: var(--tg-theme-button-color);
+    color: var(--tg-theme-button-text-color);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px var(--tg-theme-shadow-color);
+}
+
+button:hover {
+    background-color: #0077aa;
+    box-shadow: 0 6px 12px var(--tg-theme-shadow-color);
+}
+
+#qrcode {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#scanArea {
+    width: 100%;
+    height: 300px;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px var(--tg-theme-shadow-color);
+    margin-bottom: 20px;
+}
+
+.drop-area {
+    border: 2px dashed var(--tg-theme-hint-color);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px var(--tg-theme-shadow-color);
+}
+
+.drop-area:hover {
+    background-color: rgba(0, 136, 204, 0.1);
+    box-shadow: 0 6px 12px var(--tg-theme-shadow-color);
+}
+
+.form-group input[type="color"] {
+    height: 40px;
+    padding: 2px;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px var(--tg-theme-shadow-color);
+}
+
+.form-group input[type="range"] {
+    -webkit-appearance: none;
+    height: 10px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px var(--tg-theme-shadow-color);
+    transition: opacity 0.2s ease;
+}
+
+.form-group input[type="range"]:hover {
+    opacity: 1;
+}
+
+.form-group input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #00aaff;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.generate-btn, .download-btn, .telegram-btn {
+    width: 100%;
+    padding: 12px;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 8px var(--tg-theme-shadow-color);
+}
+
+.generate-btn {
+    background-color: #28a745;
+}
+
+.generate-btn:hover {
+    background-color: #218838;
+}
+
+.download-btn {
+    background-color: #007bff;
+}
+
+.download-btn:hover {
+    background-color: #0056b3;
+}
+
+.telegram-btn {
+    background-color: #0088cc;
+}
+
+.telegram-btn:hover {
+    background-color: #006699;
+}
+
+.qr-result {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.form-group input[type="file"]::before {
+    content: 'Выберите файл';
+    display: inline-block;
+    background: #007bff;
+    color: white;
+    padding: 8px 12px;
+    outline: none;
+    cursor: pointer;
+    font-weight: 700;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.form-group input[type="file"]:hover::before {
+    background-color: #0056b3;
+}
+
+#scanArea {
+    position: relative;
+    overflow: hidden;
+}
+
+.scanner-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: rgba(0, 255, 0, 0.7); /* Цвет линии сканирования */
+    animation: scan 2s linear infinite;
+}
+
+@keyframes scan {
+    0% {
+        top: 0;
+    }
+    100% {
+        top: 100%;
+    }
+}
+
+
+#scanResult,
+h2,
+.drop-area p {
+    color: #000000; /* Черный цвет текста */
+    text-align: center; /* Выравнивание текста по центру */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Небольшая тень для 3D эффекта */
+    font-weight: bold; /* Чтобы текст выглядел четче */
+}
+
+
+/* Существующие стили */
+
+.nav-icon {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+    margin-bottom: 4px;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+}
+
+.nav-item.active {
+    color: #007bff;
+}

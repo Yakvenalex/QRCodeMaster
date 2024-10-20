@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Загрузить QR-код{% endblock %}
+
+{% block content %}
+<h2>Загрузить QR-код</h2>
+<div class="drop-area" onclick="document.getElementById('fileUpload').click()">
+    <p>Нажмите здесь или перетащите файл для загрузки</p>
+</div>
+<input type="file" id="fileUpload" accept="image/*" style="display: none;" onchange="handleFileUpload(event)">
+<div id="resultSection" style="display:none;">
+    <p id="scanResult"></p>
+    <button id="copyBtn" onclick="copyResult()">Скопировать результат</button>
+    <button id="sendToTelegramBtn" onclick="sendToTelegram()">Отправить в Telegram</button>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="/static/js/upload.js"></script>
+{% endblock %}

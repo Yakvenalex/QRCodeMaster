@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Scan QR Code{% endblock %}
+
+{% block content %}
+<h2>Сканер QR-кодов</h2>
+<div id="scanArea" style="position: relative; overflow: hidden;">
+    <video id="video" style="width: 100%; height: 300px; object-fit: cover;"></video>
+    <canvas id="canvas" style="display: none;"></canvas>
+    <div id="scannerLine" class="scanner-line" style="display: none;"></div> <!-- Сканирующая линия -->
+</div>
+<button id="toggleScanBtn" onclick="toggleScanning()">Начать сканирование</button>
+<div id="resultArea" style="display: none;">
+    <p id="scanResult"></p>
+    <button id="copyBtn" onclick="copyResult()">Копировать результат</button>
+    <button id="sendToTelegramBtn" onclick="sendToTelegram()">Отправить в Telegram</button>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="/static/js/scan.js"></script>
+{% endblock %}

@@ -1,0 +1,212 @@
+#generateTab {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+    font-size: 14px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="range"],
+.form-group input[type="color"],
+.form-group select,
+.form-group input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="range"]:focus,
+.form-group input[type="color"]:focus,
+.form-group select:focus,
+.form-group input[type="file"]:focus {
+    border-color: #007bff;
+    box-shadow: 0 2px 10px rgba(0, 123, 255, 0.2);
+}
+
+.form-group input[type="color"] {
+    height: 40px;
+    padding: 2px;
+    border-radius: 8px;
+}
+
+.form-group input[type="range"] {
+    -webkit-appearance: none;
+    height: 10px;
+    background: #d3d3d3;
+    border-radius: 8px;
+    outline: none;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+}
+
+.form-group input[type="range"]:hover {
+    opacity: 1;
+}
+
+.form-group input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #007bff;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.form-group input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #007bff;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.generate-btn, .download-btn, .telegram-btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 12px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.generate-btn {
+    background-color: #28a745;
+}
+
+.generate-btn:hover {
+    background-color: #218838;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.download-btn {
+    background-color: #007bff;
+}
+
+.download-btn:hover {
+    background-color: #0056b3;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.telegram-btn {
+    background-color: #0088cc;
+}
+
+.telegram-btn:hover {
+    background-color: #006699;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.qr-result {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#qrSizeValue {
+    margin-left: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+#downloadQR, #sendToTelegram, .generate-btn {
+    margin-bottom: 15px;
+}
+
+.form-group input[type="file"] {
+    padding: 12px;
+    background-color: #f8f9fa;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input[type="file"]:focus {
+    border-color: #007bff;
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
+}
+
+.form-group input[type="file"]::-webkit-file-upload-button {
+    visibility: hidden;
+    width: 0;
+}
+
+.form-group input[type="file"]::before {
+    content: 'Выберите файл';
+    display: inline-block;
+    background: #007bff;
+    color: white;
+    padding: 10px 16px;
+    outline: none;
+    white-space: nowrap;
+    cursor: pointer;
+    font-weight: 700;
+    border-radius: 8px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input[type="file"]:hover::before {
+    background-color: #0056b3;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.file-input-wrapper {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.file-input-wrapper input[type="file"] {
+    flex: 0 0 auto;
+    margin-right: 10px;
+}
+
+.file-info {
+    flex: 1 1 auto;
+    margin-top: 5px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+@media (min-width: 768px) {
+    .file-input-wrapper {
+        flex-wrap: nowrap;
+    }
+
+    .file-info {
+        margin-top: 0;
+    }
+}

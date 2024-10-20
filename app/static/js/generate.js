@@ -4,8 +4,6 @@ function init() {
     const form = document.getElementById('qrForm');
     const qrSizeInput = document.getElementById('qrSize');
     const qrSizeValue = document.getElementById('qrSizeValue');
-    const logoInput = document.getElementById('logo');
-    const logoInfo = document.getElementById('logoInfo');
     const dotScaleInput = document.getElementById('dotScale');
     const dotScaleValue = document.getElementById('dotScaleValue');
     const backgroundImageAlphaInput = document.getElementById('backgroundImageAlpha');
@@ -17,9 +15,7 @@ function init() {
         dotScaleInput,
         dotScaleValue,
         backgroundImageAlphaInput,
-        backgroundImageAlphaValue,
-        logoInput,
-        logoInfo
+        backgroundImageAlphaValue
     });
     setupFormSubmit(form);
 }
@@ -30,15 +26,11 @@ function setupInputListeners({
                                  dotScaleInput,
                                  dotScaleValue,
                                  backgroundImageAlphaInput,
-                                 backgroundImageAlphaValue,
-                                 logoInput,
-                                 logoInfo
+                                 backgroundImageAlphaValue
                              }) {
     qrSizeInput.addEventListener('input', () => updateTextContent(qrSizeValue, `${qrSizeInput.value}px`));
     dotScaleInput.addEventListener('input', () => updateTextContent(dotScaleValue, dotScaleInput.value));
     backgroundImageAlphaInput.addEventListener('input', () => updateTextContent(backgroundImageAlphaValue, backgroundImageAlphaInput.value));
-
-    logoInput.addEventListener('change', handleLogoSelection.bind(null, logoInfo));
 }
 
 function setupFormSubmit(form) {
@@ -52,11 +44,6 @@ function setupFormSubmit(form) {
 
 function updateTextContent(element, text) {
     element.textContent = text;
-}
-
-function handleLogoSelection(logoInfo, event) {
-    const file = event.target.files[0];
-    logoInfo.innerHTML = file ? `Выбран файл: ${file.name} (${(file.size / 1024).toFixed(2)} КБ)` : '';
 }
 
 function validateForm() {
@@ -78,11 +65,14 @@ async function generateQR() {
         showLoader(true);
         resetQRCodeState();
         const qrCodeOptions = getQRCodeOptions();
-        const logoFile = getFileFromInput('logo');
+
         const backgroundFile = getFileFromInput('backgroundImage');
 
-        if (logoFile) qrCodeOptions.logo = URL.createObjectURL(logoFile);
-        if (backgroundFile) qrCodeOptions.backgroundImage = URL.createObjectURL(backgroundFile);
+        // Обработка фонового изображения
+        if (backgroundFile) {
+            const backgroundURL = await loadImage(backgroundFile);
+            qrCodeOptions.backgroundImage = backgroundURL;
+        }
 
         const qrcodeContainer = document.getElementById('qrcode');
         clearQRCodeContainer(qrcodeContainer);
@@ -93,6 +83,20 @@ async function generateQR() {
         showLoader(false);
         handleError(error);
     }
+}
+
+function loadImage(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = function (event) {
+            const img = new Image();
+            img.src = event.target.result;
+            img.onload = () => resolve(img.src);  // Успешно загрузилось
+            img.onerror = () => reject('Ошибка загрузки изображения');
+        };
+        reader.onerror = () => reject('Ошибка чтения файла');
+        reader.readAsDataURL(file);
+    });
 }
 
 function getQRCodeOptions() {
@@ -106,8 +110,6 @@ function getQRCodeOptions() {
         correctLevel: QRCode.CorrectLevel[formData.get('correctLevel')],
         dotScale: parseFloat(formData.get('dotScale')),
         quietZone: parseInt(formData.get('quietZone')),
-        logoWidth: parseInt(formData.get('logoWidth')),
-        logoHeight: parseInt(formData.get('logoHeight')),
         backgroundImageAlpha: parseFloat(formData.get('backgroundImageAlpha')),
         onRenderingEnd: updateQRCodeDisplay,
     };

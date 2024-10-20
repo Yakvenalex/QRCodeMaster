@@ -62,10 +62,8 @@ jinja2==3.1.4
 pydantic_settings==2.5.2
 ```
 
-# QRCodeMaster
-
-[![Смотреть ведео-демку](https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg)](https://rutube.ru/video/private/06223afdb8c13de35756e20273152cea/?p=Al2t5kkmsl0XcjURjGZPQg)
+# QRCodeMaster DEMO
 
 Видео-демонстрация возможностей проекта QRCodeMaster доступна [здесь](https://rutube.ru/video/private/06223afdb8c13de35756e20273152cea/?p=Al2t5kkmsl0XcjURjGZPQg).
-
+Бота можно поклацать [здесь](@qr_code_masterBOT).
 
